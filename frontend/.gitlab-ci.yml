@@ -11,8 +11,6 @@ stages:
 
 build-frontend-code-job:
   image: docker:20.10.12-dind-rootless
-  services:
-    - docker:dind
   stage: build
   before_script:
     - docker --version
@@ -29,8 +27,6 @@ upload-frontend-release:
   variables:
     GIT_STRATEGY: none
   image: docker:20.10.12-dind-rootless
-  services:
-    - docker:dind
   stage: release
   before_script:
     - until docker info; do sleep 1; done
