@@ -8,11 +8,15 @@ include:
   
 stages:
    - build
-   - test
    - release
 
 build-frontend-code-job:
   image: docker:20.10.12-dind-rootless
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_CERTDIR: ""
+
   services:
     - docker:dind
   stage: build
