@@ -1,0 +1,24 @@
+version: "3.3"
+
+services:
+  backend:
+    image: momo-backend
+    restart: always
+    ports:
+      - "8081:8081"
+    networks:
+      - momo-network
+
+  frontend:
+    image: momo-frontend
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx-conf:/etc/nginx/conf.d
+    networks:
+      - momo-network
+
+networks:
+  momo-network:
+    
