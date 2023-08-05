@@ -10,7 +10,6 @@ stages:
    - build
    - test
    - release
-   - deploy
 
 build-frontend-code-job:
   image: docker:20.10.12-dind-rootless
@@ -43,4 +42,4 @@ upload-frontend-release:
     - docker tag $CI_REGISTRY_IMAGE/sausage-frontend:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/sausage-frontend:latest
     - docker push $CI_REGISTRY_IMAGE/sausage-frontend:latest
   needs:
-    - sonar-scanner
+    - build-frontend-code-job

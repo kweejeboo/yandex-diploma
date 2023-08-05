@@ -11,12 +11,12 @@ frontend:
 #    changes: 
 #      - frontend/**/*
 
-backend:
-  stage: module-pipelines
-  trigger:
-    include:
-      - "/backend/.gitlab-ci.yml"
-    strategy: depend
+# backend:
+#  stage: module-pipelines
+#  trigger:
+#    include:
+#      - "/backend/.gitlab-ci.yml"
+#    strategy: depend
 # only:
 #  changes:  
 #      - backend/**/*
