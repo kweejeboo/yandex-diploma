@@ -1,4 +1,4 @@
-module gitlab.praktikum-services.ru/Stasyan/momo-store
+module gitlab.praktikum-services.ru/std-013-60/momo-store
 
 go 1.17
 
