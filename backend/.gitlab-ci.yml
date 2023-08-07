@@ -9,7 +9,8 @@ stages:
   - build
   - test
   - release
-
+variables:
+  REPO_NAME: gitlab.praktikum-services.ru/std-013-60/momo-store/
 build-backend-code-job:
   stage: build
   image: docker:20.10.12-dind-rootless
@@ -28,6 +29,9 @@ unit-test-backend:
   stage: test
   image: golang:1.9
   script:
+    - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
+    - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
+    - cd $GOPATH/src/$REPO_NAME
     - go test -v ./backend/cmd/api/
   needs:
     - build-backend-code-job
