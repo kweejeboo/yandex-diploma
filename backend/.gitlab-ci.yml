@@ -28,10 +28,17 @@ build-backend-code-job:
 unit-test-backend:
   stage: test
   image: golang:1.20-alpine
-  script:
+  before_script:
     - cd backend/
-    - go run ./cmd/api
-    - go test -v ./... -coverprofile .testCoverage.txt
+    - go build ./cmd/api
+  script:
+    - go test -v -coverprofile=coverage.out -json ./... | tee test-report.json
+  artifacts:
+    when: always
+    paths:
+      - test-report.json
+      - coverage.out
+    expire_in: 1 hour
   needs:
     - build-backend-code-job
    
