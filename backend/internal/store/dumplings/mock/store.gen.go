@@ -8,7 +8,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	dumplings "gitlab.praktikum-services.ru/Stasyan/momo-store/internal/store/dumplings"
+	dumplings "gitlab.praktikum-services.ru/std-013-60/momo-store/internal/store/dumplings"
 	gomock "github.com/golang/mock/gomock"
 )
 
