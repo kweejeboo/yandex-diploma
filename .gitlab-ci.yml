@@ -18,5 +18,5 @@ backend:
       - "/backend/.gitlab-ci.yml"
     strategy: depend
   only:
-  changes:  
+    changes:  
       - backend/**/*
