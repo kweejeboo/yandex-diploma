@@ -7,16 +7,16 @@ frontend:
     include:
       - "/frontend/.gitlab-ci.yml"
     strategy: depend 
-#  only:
-#    changes: 
-#      - frontend/**/*
+  only:
+    changes: 
+      - frontend/**/*
 
-# backend:
-#  stage: module-pipelines
-#  trigger:
-#    include:
-#      - "/backend/.gitlab-ci.yml"
-#    strategy: depend
-# only:
-#  changes:  
-#      - backend/**/*
+ backend:
+  stage: module-pipelines
+  trigger:
+    include:
+      - "/backend/.gitlab-ci.yml"
+    strategy: depend
+  only:
+  changes:  
+      - backend/**/*
