@@ -46,5 +46,5 @@ upload-backend-release:
       $CI_REGISTRY_IMAGE/momo-backend:latest
     - docker push $CI_REGISTRY_IMAGE/momo-backend:latest
   needs:
-    - unit-test-backend:
+    - unit-test-backend
 
