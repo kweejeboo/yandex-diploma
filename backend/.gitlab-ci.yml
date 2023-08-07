@@ -25,21 +25,12 @@ build-backend-code-job:
       --tag $CI_REGISTRY_IMAGE/momo-backend:$CI_COMMIT_SHA . 
     - docker push $CI_REGISTRY_IMAGE/momo-backend:$CI_COMMIT_SHA
 
-unit-test-backend:
+test-backend:
   stage: test
   image: golang:1.20
-#  before_script:
-#    - cd backend/
-#    - go build ./cmd/api
   script:
     - cd backend
-    - go test -v -coverprofile=coverage.out -json ./... | tee test-report.json
-  artifacts:
-    when: always
-    paths:
-      - test-report.json
-      - coverage.out
-    expire_in: 1 hour
+    - go test -v ./...
   needs:
     - build-backend-code-job
    
@@ -57,5 +48,5 @@ upload-backend-release:
       $CI_REGISTRY_IMAGE/momo-backend:latest
     - docker push $CI_REGISTRY_IMAGE/momo-backend:latest
   needs:
-    - unit-test-backend
+    - test-backend
 
