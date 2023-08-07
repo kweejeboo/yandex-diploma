@@ -32,7 +32,7 @@ unit-test-backend:
     - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
     - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
     - cd $GOPATH/src/$REPO_NAME
-    - go test -v .
+    - go test -v ./... -coverprofile .testCoverage.txt
   needs:
     - build-backend-code-job
    
