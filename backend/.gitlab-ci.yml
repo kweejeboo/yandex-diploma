@@ -14,8 +14,6 @@ stages:
 build-backend-code-job:
   stage: build
   image: docker:20.10.12-dind-rootless
-  services:
-    - docker:dind
   before_script:
     - until docker info; do sleep 1; done
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -23,17 +21,17 @@ build-backend-code-job:
   script:
     - cd backend
     - >
-    docker build --build-arg VERSION=$VERSION --tag $CI_REGISTRY_IMAGE/momo-backend:$CI_COMMIT_SHA . 
+      docker build --build-arg VERSION=$VERSION
+      --tag $CI_REGISTRY_IMAGE/momo-backend:$CI_COMMIT_SHA . 
     - docker push $CI_REGISTRY_IMAGE/momo-backend:$CI_COMMIT_SHA
 
-unit-test-backendd:
+unit-test-backend:
   stage: test
   script:
     - go test -v ./backend/
   needs:
     - build-backend-code-job
    
-
 upload-backend-release:
   variables:
     GIT_STRATEGY: none
@@ -48,5 +46,5 @@ upload-backend-release:
       $CI_REGISTRY_IMAGE/momo-backend:latest
     - docker push $CI_REGISTRY_IMAGE/momo-backend:latest
   needs:
-    - unit-test-backendd:
+    - unit-test-backend:
 
