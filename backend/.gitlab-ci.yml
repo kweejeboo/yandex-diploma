@@ -27,11 +27,10 @@ build-backend-code-job:
 
 unit-test-backend:
   stage: test
-  image: golang:1.9
+  image: golang:1.20-alpine
   script:
-    - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
-    - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
-    - cd $GOPATH/src/$REPO_NAME
+    - cd backend/
+    - go run ./cmd/api
     - go test -v ./... -coverprofile .testCoverage.txt
   needs:
     - build-backend-code-job
