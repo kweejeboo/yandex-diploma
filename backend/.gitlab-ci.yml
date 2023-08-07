@@ -28,7 +28,7 @@ unit-test-backend:
   stage: test
   image: golang:1.9
   script:
-    - go test -v ./backend/
+    - go test -v ./backend/cmd/api/
   needs:
     - build-backend-code-job
    
