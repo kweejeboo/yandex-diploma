@@ -32,6 +32,7 @@ unit-test-backend:
 #    - cd backend/
 #    - go build ./cmd/api
   script:
+    - cd backend
     - go test -v -coverprofile=coverage.out -json ./... | tee test-report.json
   artifacts:
     when: always
