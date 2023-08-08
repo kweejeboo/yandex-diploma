@@ -3,9 +3,9 @@ WORKDIR /usr/src/app
 ENV NODE_ENV=/
 ENV VUE_APP_API_URL=/
 COPY ./package.json .
-RUN npm install
+RUN npm install --cache .npm --prefer-offline && npm run build
 COPY . .
-RUN npm install --cache .npm --prefer-offline && npm run build 
+RUN npm run build 
 
 FROM nginx:1.22.1-alpine
 RUN rm -rf /usr/share/nginx/html/*
