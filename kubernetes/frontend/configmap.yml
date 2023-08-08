@@ -7,11 +7,14 @@ data:
   nginx.conf: |
     server {
 
-      location / {
-        root   /usr/share/nginx/html;
-        index  index.html;
-        try_files $uri $uri/ /index.html;
-      }
+        listen 80;
+        listen [::]:80;
+        
+          location / {
+              root   /usr/share/nginx/html;
+              index  index.html index.htm;
+              try_files $uri $uri/ /index.html;
+          }
 
       location ~ /(categories|products|auth/whoami|metrics|orders|health) {
         proxy_pass http://backend:8081;
