@@ -9,8 +9,7 @@ stages:
   - build
   - test
   - release
-variables:
-  REPO_NAME: gitlab.praktikum-services.ru/std-013-60/momo-store
+
 build-backend-code-job:
   stage: build
   image: docker:20.10.12-dind-rootless
