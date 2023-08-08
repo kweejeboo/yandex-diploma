@@ -19,7 +19,9 @@ data:
               index  index.html index.htm;
               try_files $uri $uri/ /index.html;
             }
-
+              location ~ ^/(categories|products|auth|metrics|orders)/ {
+               proxy_pass http://momo-backend;
+            }
             location /api/ {
               proxy_pass http://momo-backend;
             }
