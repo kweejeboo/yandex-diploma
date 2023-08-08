@@ -5,25 +5,18 @@ metadata:
   name: nginx-conf
 data:
   nginx.conf: |
-      upstream Backend {
+    server {
 
-           server backend:8081;
-        }
-
-        server {
-
-          listen       80;
-          listen  [::]:80;
-
-          location / {
-              root   /usr/share/nginx/html;
-              index  index.html index.htm;
-              try_files $uri $uri/ /index.html;
-          }
-
-          location /api/ {
-              # The following statement will proxy traffic to the upstream named Backend
-              proxy_pass http://Backend/;
-          }
-
+      location / {
+        root   /usr/share/nginx/html;
+        index  index.html;
+        try_files $uri $uri/ /index.html;
       }
+
+      location ~ /(categories|products|auth/whoami|metrics|orders|health) {
+        proxy_pass http://backend:8081;
+      }
+      location /api/ {
+        proxy_pass http://backend:8081;
+      }
+    }
