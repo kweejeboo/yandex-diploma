@@ -1,7 +1,7 @@
 FROM node:16 AS builder
 WORKDIR /usr/src/app
-ARG VUE_APP_API_URL=https://backend/api
-ARG NOD_ENV=production
+ARG VUE_APP_API_URL=https://momo-dumplings.chickenkiller.com
+ARG NOD_ENV=dev
 COPY ./package.json .
 RUN npm install
 COPY . .
