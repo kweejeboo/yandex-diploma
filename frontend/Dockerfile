@@ -1,6 +1,6 @@
 FROM node:16 AS builder
 WORKDIR /usr/src/app
-ARG VUE_APP_API_URL=http://momo-dumplings.chickenkiller.com/api
+ARG VUE_APP_API_URL=https://momo-dumplings.chickenkiller.com/api
 ARG NOD_ENV=production
 COPY ./package.json .
 RUN npm install
