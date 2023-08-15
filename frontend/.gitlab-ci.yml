@@ -21,8 +21,8 @@ build-frontend-code-job:
     - echo "$DOCKERHUB_TOKEN" | docker login --username $DOCKERHUB_LOGIN --password-stdin
   script:
     - cd frontend
-    - docker build --tag $CI_REGISTRY_IMAGE/momo-frontend:$VERSION . 
-    - docker push $CI_REGISTRY_IMAGE/momo-frontend:$VERSION
+    - docker build --tag $CI_REGISTRY_IMAGE/momo-frontend:$CI_COMMIT_SHA . 
+    - docker push $CI_REGISTRY_IMAGE/momo-frontend:$CI_COMMIT_SHA
 
 sonarqube-frontend-sast:
   stage: test
@@ -33,7 +33,7 @@ sonarqube-frontend-sast:
       sonar-scanner -Dsonar.projectKey=${FRONTEND_PROJECT_KEY}
       -Dsonar.projectName=${FRONTEND_PROJECT_NAME}
       -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.sources=.
-      -Dsonar.login=${SONAR_LOGIN}
+      -Dsonar.login=${SONAR_FRONT_LOGIN}
   cache:
     key: "${CI_JOB_NAME}"
     paths:
