@@ -18,5 +18,5 @@ deploy-to-kube-cluster:
     - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
   script:
     - cd infrastructure/momo-store-chart
-    - helm upgrade --dependency-update --install --atomic momo-store . 
+    - helm upgrade -n default --dependency-update --install --atomic momo-store . 
     - rm ~/.kube/config
