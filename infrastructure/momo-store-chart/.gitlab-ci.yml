@@ -1,0 +1,22 @@
+stages:
+  - release
+  - deploy
+
+nexus-upload:
+  stage: release
+  image: alpine/helm:3.9.3
+  script:
+    - cd infrastructure/momo-store-chart
+    - helm package --dependency-update .
+    - curl -u $NEXUS_USER:$NEXUS_PASS $NEXUS_HELM_REPO --upload-file *.tgz
+
+deploy-to-kube-cluster:
+  stage: deploy
+  image: alpine/helm:3.9.3
+  before_script:
+    - mkdir -p ~/.kube
+    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+  script:
+    - cd infrastructure/momo-store-chart
+    - helm upgrade -n default --dependency-update --install --atomic momo-store . 
+    - rm ~/.kube/config

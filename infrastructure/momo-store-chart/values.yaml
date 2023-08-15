@@ -1,0 +1,5 @@
+# backend and frontend subchart
+global:
+  repo: gitlab.praktikum-services.ru:5050/std-013-60/momo-store/
+  imagePullPolicy: Always
+  revisionHistoryLimit: 15

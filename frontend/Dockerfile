@@ -1,11 +1,10 @@
 FROM node:16 AS builder
 WORKDIR /usr/src/app
+COPY ./package.json .
+COPY . .
 ENV NODE_ENV=/
 ENV VUE_APP_API_URL=/
-COPY ./package.json .
-RUN npm install
-COPY . .
-RUN npm run build 
+RUN npm install --cache .npm --prefer-offline && npm run build 
 
 FROM nginx:1.22.1-alpine
 RUN rm -rf /usr/share/nginx/html/*
