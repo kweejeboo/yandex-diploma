@@ -35,7 +35,20 @@ go test -v ./...
 ```
 ## CI/CD
 
+Приложение разворачивается с использовванием downstream-pipeline, триггером для каждого является любое изменение в папке с конкретным сервисом.
+
+Проходят этапы сборки проекта, тестирования, загрузки в соответствующие хранилища(Nexus для Helm, Gitlab Container Registry для образов Docker) и пуша в prod-среду helm'ом
+
 ## версионирование
+
+SemVer 2.0.0
+мажорные и минорные версии приложения изменяются вручную в файлах backend/.gitlab-ci.yaml и frontend/.gitlab-ci.yaml в переменной VERSION
+патч-версии изменяются автоматически на основе переменной CI_PIPELINE_ID
+для инфраструктуры версия приложения изменяется вручную в чарте infrastructure/momo-store-helm/Chart.yaml
+
+Используется SemVer 2.0.0
+Версии релиза изменяются в паеременной VERSION, которая зависит от CI_PIPELINE_ID
+Версии для Helm-чарта изменяются в самом Chart.yaml
 
 ## работа с нашим приложением
 
@@ -134,5 +147,9 @@ https://gitlab.praktikum-services.ru/root/monitoring-tools
 
 ![Alt text](image.png)
 
+![Alt text](image-1.png)
 
+Графана доступна по внешней ссылке:
+
+https://grafana-momo-dumplings.chickenkiller.com/
 
