@@ -50,8 +50,8 @@ upload-frontend-release:
     - until docker info; do sleep 1; done
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker pull $CI_REGISTRY_IMAGE/momo-frontend:$VERSION
-    - docker tag $CI_REGISTRY_IMAGE/momo-frontend:$VERSION $CI_REGISTRY_IMAGE/momo-frontend:latest
+    - docker pull $CI_REGISTRY_IMAGE/momo-frontend:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE/momo-frontend:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/momo-frontend:latest
     - docker push $CI_REGISTRY_IMAGE/momo-frontend:latest
   needs:
     - build-frontend-code-job
@@ -63,8 +63,8 @@ deploy-to-kubernetes-frontend:
     - mkdir -p ~/.kube
     - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
   script:
-    - cd infrastructure/momo-store-helm
-    - helm upgrade --dependency-update --install --atomic -n momo-store momo-store . --set frontend.image.tag=$VERSION --reuse-values
+    - cd infrastructure/momo-store-chart
+    - helm upgrade --dependency-update --install --atomic -n default momo-store . 
     - rm ~/.kube/config
   when: manual
   environment:

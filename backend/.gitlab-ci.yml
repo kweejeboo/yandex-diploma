@@ -78,7 +78,7 @@ deploy-to-kubernetes-backend:
     - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
   script:
     - cd infrastructure/momo-store-helm
-    - helm upgrade --dependency-update --install --atomic -n momo-store momo-store . --set backend.image.tag=$VERSION --reuse-values
+    - helm upgrade --dependency-update --install --atomic -n default momo-store . 
     - rm ~/.kube/config
   when: manual
   environment:
