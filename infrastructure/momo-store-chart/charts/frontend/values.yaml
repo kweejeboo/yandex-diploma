@@ -1,0 +1,16 @@
+image: gitlab.praktikum-services.ru:5050/std-013-60/momo-store/momo-frontend
+project: momo-frontend
+prometheus_exporter: nginx/nginx-prometheus-exporter:0.10.0
+replicas: 1
+service:
+  port: 80
+environment: production
+strategy:
+  type: Recreate
+resources:
+  requests:
+    memory: 100Mi
+    cpu: 25m
+proxy:
+  host: backend
+  port: 8081

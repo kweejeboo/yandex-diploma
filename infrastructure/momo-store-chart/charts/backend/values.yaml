@@ -1,0 +1,28 @@
+image: gitlab.praktikum-services.ru:5050/std-013-60/momo-store/momo-backend
+project: momo-backend
+annotations:
+  prometheus.io/path: /metrics
+  prometheus.io/port: "8081"
+  prometheus.io/scrape: "true"
+replicas: 3
+ports:
+  port: 8081
+  containerPort: 8081
+environment: production
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+    maxSurge: 1
+resources:
+  requests:
+    memory: 100Mi
+    cpu: 25m
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8081
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 5

@@ -7,7 +7,9 @@ include:
 
 stages:
    - build
+   - test
    - release
+   - deploy
 
 build-frontend-code-job:
   image: docker:20.10.12-dind-rootless
@@ -22,6 +24,22 @@ build-frontend-code-job:
     - docker build --tag $CI_REGISTRY_IMAGE/momo-frontend:$VERSION . 
     - docker push $CI_REGISTRY_IMAGE/momo-frontend:$VERSION
 
+sonarqube-frontend-sast:
+  stage: test
+  image: sonarsource/sonar-scanner-cli:latest
+  script:
+    - cd frontend
+    - >
+      sonar-scanner -Dsonar.projectKey=${FRONTEND_PROJECT_KEY}
+      -Dsonar.projectName=${FRONTEND_PROJECT_NAME}
+      -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.sources=.
+      -Dsonar.login=${SONAR_LOGIN}
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  needs:
+    - build-frontend-code-job
 
 upload-frontend-release:
   variables:
@@ -37,3 +55,18 @@ upload-frontend-release:
     - docker push $CI_REGISTRY_IMAGE/momo-frontend:latest
   needs:
     - build-frontend-code-job
+
+deploy-to-kubernetes-frontend:
+  stage: deploy
+  image: alpine/helm:3.9.3
+  before_script:
+    - mkdir -p ~/.kube
+    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+  script:
+    - cd infrastructure/momo-store-helm
+    - helm upgrade --dependency-update --install --atomic -n momo-store momo-store . --set frontend.image.tag=$VERSION --reuse-values
+    - rm ~/.kube/config
+  when: manual
+  environment:
+    name: prod-frontend
+    url: https://momo-dumplings.chickenkiller.com/

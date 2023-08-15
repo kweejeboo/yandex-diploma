@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+*.tgz
 
 # Test binary, built with `go test -c`
 *.test
@@ -16,3 +17,13 @@ vendor/
 .idea/
 .vscode/
 .DS_Store
+terraform_key.json
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+*.lock.*
+ingress/
+kubernetes/
+monitoring-tools/
+secret.tfvars

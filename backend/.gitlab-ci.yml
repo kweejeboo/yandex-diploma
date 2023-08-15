@@ -9,6 +9,7 @@ stages:
   - build
   - test
   - release
+  - deploy
 
 build-backend-code-job:
   stage: build
@@ -24,12 +25,32 @@ build-backend-code-job:
       --tag $CI_REGISTRY_IMAGE/momo-backend:$CI_COMMIT_SHA . 
     - docker push $CI_REGISTRY_IMAGE/momo-backend:$CI_COMMIT_SHA
 
-test-backend:
+test-backend-code-job:
   stage: test
   image: golang:1.20
   script:
     - cd backend
+    - go fmt $(go list ./... | grep -v /vendor/)
+    - go vet $(go list ./... | grep -v /vendor/)
+    - go test -race $(go list ./... | grep -v /vendor/)
     - go test -v ./...
+  needs:
+    - build-backend-code-job
+
+sonarqube-backend-sast:
+  stage: test
+  image: sonarsource/sonar-scanner-cli:latest
+  script:
+    - cd backend
+    - >
+      sonar-scanner -Dsonar.projectKey=${BACKEND_PROJECT_KEY}
+      -Dsonar.projectName=${BACKEND_PROJECT_NAME}
+      -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.sources=.
+      -Dsonar.login=${SONAR_LOGIN}
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
   needs:
     - build-backend-code-job
    
@@ -47,5 +68,19 @@ upload-backend-release:
       $CI_REGISTRY_IMAGE/momo-backend:latest
     - docker push $CI_REGISTRY_IMAGE/momo-backend:latest
   needs:
-    - test-backend
+    - sonarqube-backend-sast
+
+deploy-to-kubernetes-backend:
+  stage: deploy
+  image: alpine/helm:3.9.3
+  before_script:
+    - mkdir -p ~/.kube
+    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+  script:
+    - cd infrastructure/momo-store-helm
+    - helm upgrade --dependency-update --install --atomic -n momo-store momo-store . --set backend.image.tag=$VERSION --reuse-values
+    - rm ~/.kube/config
+  when: manual
+  environment:
+    name: prod-backend
 
