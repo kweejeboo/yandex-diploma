@@ -15,7 +15,7 @@ NODE_ENV=production VUE_APP_API_URL=http://localhost:8081 npm run serve
 go run ./cmd/api
 go test -v ./... 
 ```
-### описание проекта
+# ОПИСАНИЕ ПРОЕКТРА
 
 ##  проектная структура
 ```
@@ -29,8 +29,7 @@ go test -v ./...
 └── infrastructure
     ├── momo-store-chart
     │   ├── charts
-    │   ├── .gitlab-ci.yml
-    │   └── values.yaml
+    │   └── .gitlab-ci.yml
     └── terraform
 ```
 ## CI/CD
