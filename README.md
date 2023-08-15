@@ -15,7 +15,7 @@ NODE_ENV=production VUE_APP_API_URL=http://localhost:8081 npm run serve
 go run ./cmd/api
 go test -v ./... 
 ```
-## описание проектра
+### описание проекта
 
 ##  проектная структура
 ```
@@ -33,6 +33,9 @@ go test -v ./...
     │   └── values.yaml
     └── terraform
 ```
+## CI/CD
+
+## версионирование
 
 ## работа с нашим приложением
 
@@ -123,5 +126,13 @@ Cервис-аккаунт:
 kubectl create serviceaccount <имя_аккаунта>
 kubectl patch serviceaccount <имя_аккаунта> -p '{"imagePullSecrets": [{"name": "docker-config-secret"}]}' -n default 
 ```
+
+## мониторинг
+
+Мониторинг построен на базе учебного репозитория:
+https://gitlab.praktikum-services.ru/root/monitoring-tools
+
+![Alt text](image.png)
+
 
 
