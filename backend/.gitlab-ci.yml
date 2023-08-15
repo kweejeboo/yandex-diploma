@@ -77,7 +77,7 @@ deploy-to-kubernetes-backend:
     - mkdir -p ~/.kube
     - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
   script:
-    - cd infrastructure/momo-store-helm
+    - cd infrastructure/momo-store-chart
     - helm upgrade --dependency-update --install --atomic -n default momo-store . 
     - rm ~/.kube/config
   when: manual
